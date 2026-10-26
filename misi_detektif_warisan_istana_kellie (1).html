@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misi Detektif Warisan — Istana Kellie</title>
+<style>
+:root{--navy:#172554;--blue:#2563eb;--cyan:#67e8f9;--gold:#fbbf24;--paper:#fff7df;--ink:#172033;--green:#16a34a;--red:#dc2626}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#f8fafc;background:#0b1225;background-image:radial-gradient(circle at 10% 15%,#1d3766 0,transparent 30%),radial-gradient(circle at 90% 80%,#312e81 0,transparent 30%)}
+.wrap{max-width:1050px;margin:auto;padding:22px}
+.hero{border:3px solid var(--cyan);border-radius:20px;padding:26px;background:linear-gradient(135deg,#172554ee,#312e81ee);box-shadow:0 0 0 5px #1e293b,0 0 28px #22d3ee33;text-align:center}
+.pixel{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:1px;text-transform:uppercase}
+.kicker{color:var(--cyan);font-weight:800;font-size:.8rem}
+h1{font-size:clamp(1.8rem,5vw,3.2rem);margin:10px 0;color:#fff}
+.hero p{max-width:720px;margin:0 auto;color:#dbeafe;line-height:1.6}
+.stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.stat{border:1px solid #64748b;background:#0f172acc;border-radius:10px;padding:8px 13px;font-size:.9rem}
+.tabs{display:flex;gap:10px;margin:22px 0;flex-wrap:wrap}
+.tab{flex:1;min-width:220px;border:2px solid #475569;border-radius:12px;padding:14px;background:#111c35;color:#e2e8f0;font-weight:800;cursor:pointer;text-align:left}
+.tab.active{border-color:var(--gold);background:#382b12;color:#fde68a;box-shadow:0 0 18px #fbbf2433}
+.panel{background:#f8fafc;color:var(--ink);border-radius:18px;padding:clamp(16px,3vw,28px);border:4px solid #334155;box-shadow:0 12px 0 #020617;margin-bottom:18px}
+.panel h2{margin-top:0;color:#172554}
+.level{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:5px 10px;font-weight:800;font-size:.78rem;margin-bottom:8px}
+.intro{line-height:1.6;color:#475569}
+.meter{height:12px;background:#dbeafe;border-radius:99px;overflow:hidden;margin:12px 0 18px}
+.meter span{display:block;height:100%;width:0;background:linear-gradient(90deg,#2563eb,#22d3ee);transition:width .3s}
+.question{border:1px solid #cbd5e1;border-radius:14px;padding:16px;margin:14px 0;background:white}
+.question h3{font-size:1rem;margin:0 0 12px;line-height:1.5}
+.options{display:grid;gap:8px}
+.option{padding:11px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;text-align:left;cursor:pointer;color:#1e293b;font:inherit}
+.option:hover{border-color:#2563eb;background:#eff6ff}
+.option.correct{border-color:var(--green);background:#dcfce7}
+.option.wrong{border-color:var(--red);background:#fee2e2}
+.feedback{margin-top:10px;font-weight:650;line-height:1.5}
+.action{border:0;border-radius:10px;padding:12px 16px;font-weight:800;cursor:pointer;background:#1d4ed8;color:white;margin:6px 6px 0 0}
+.action.secondary{background:#334155}.action.gold{background:#b45309}
+.result{display:none;margin-top:16px;border-radius:12px;padding:16px;background:#ecfeff;border:1px solid #67e8f9;line-height:1.6}
+.result.show{display:block}
+.tip{border-left:4px solid #f59e0b;padding:10px 14px;background:#fffbeb;color:#78350f;border-radius:6px;line-height:1.5}
+.footer{text-align:center;color:#cbd5e1;font-size:.85rem;padding:12px}
+.small{font-size:.85rem;color:#64748b}
+.hidden{display:none}
+@media(max-width:600px){.wrap{padding:12px}.hero{padding:20px 14px}.tab{min-width:100%}.panel{border-width:2px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+<div class="kicker pixel">★ Misi Pendidikan Sejarah ★</div>
+<h1>🏰 MISI DETEKTIF WARISAN</h1>
+<p>Terokai Istana Kellie, Perak. Selesaikan dua misi untuk menguji kemahiran menilai sumber sejarah dan menghubungkan bukti dengan konteks sejarah tempatan.</p>
+<div class="stats">
+<div class="stat">🎮 2 Misi</div><div class="stat">🧠 Kemahiran Kognitif</div><div class="stat">⭐ Skor: <b id="totalScore">0</b>/6</div>
+</div>
+</header>
+
+<nav class="tabs" aria-label="Pilih misi">
+<button class="tab active" id="tab1" onclick="showMission(1)">🕵️ Misi 1: Pengkritik Sumber</button>
+<button class="tab" id="tab2" onclick="showMission(2)">🗺️ Misi 2: Hubung Kait Sejarah</button>
+</nav>
+
+<section class="panel" id="mission1">
+<span class="level pixel">LEVEL 01 • ANALISIS SUMBER</span>
+<h2>🕵️ Misi 1: Pengkritik Sumber</h2>
+<p class="intro">Anda ialah detektif sejarah. Bandingkan maklumat daripada sumber rasmi dan fikirkan cara sejarawan menilai perbezaan maklumat. Pilih jawapan terbaik bagi setiap soalan.</p>
+<div class="tip"><b>Petunjuk detektif:</b> Maklumat yang berbeza tidak semestinya bermaksud satu sumber palsu. Semak konteks, tujuan, bukti dan asal-usul setiap sumber.</div>
+<div class="meter"><span id="meter1"></span></div>
+<div id="questions1"></div>
+<button class="action" onclick="checkMission(1)">Semak Misi</button>
+<button class="action secondary" onclick="resetMission(1)">Cuba Semula</button>
+<div class="result" id="result1"></div>
+</section>
+
+<section class="panel hidden" id="mission2">
+<span class="level pixel">LEVEL 02 • PERKAITAN SEJARAH</span>
+<h2>🗺️ Misi 2: Hubung Kait Sejarah Tempatan</h2>
+<p class="intro">Hubungkan Istana Kellie dengan perkembangan ekonomi, masyarakat dan warisan Perak. Pilih jawapan yang menunjukkan pemikiran sejarah, bukan sekadar menghafal fakta.</p>
+<div class="tip"><b>Petunjuk detektif:</b> Bangunan bersejarah boleh menjadi bukti material, tetapi tafsiran tentang kehidupan masyarakat memerlukan sokongan sumber lain.</div>
+<div class="meter"><span id="meter2"></span></div>
+<div id="questions2"></div>
+<button class="action" onclick="checkMission(2)">Semak Misi</button>
+<button class="action secondary" onclick="resetMission(2)">Cuba Semula</button>
+<div class="result" id="result2"></div>
+</section>
+
+<div class="footer">E-Portfolio Warisan Sejarah Tempatan • Istana Kellie, Batu Gajah, Perak<br>Nota: Aktiviti ini ialah latihan pembelajaran. Sahkan tarikh dan fakta melalui sumber asal sebelum membuat kesimpulan sejarah.</div>
+</div>
+<script>
+const data = {
+1:[
+{q:"Dua laman memberikan tarikh pembinaan yang berbeza, iaitu 1910 dan 1915. Apakah tindakan paling wajar?",o:["Terus memilih tarikh yang paling kerap muncul","Menolak kedua-dua sumber kerana bercanggah","Menyemak konteks tarikh, peringkat pembinaan dan bukti sokongan","Menganggap perbezaan itu bukti bahawa sejarah direka"],a:2,e:"Betul. Tarikh mungkin merujuk kepada peringkat pembinaan yang berbeza. Semak kandungan asal dan cari bukti tambahan sebelum membuat kesimpulan."},
+{q:"Apakah ciri yang paling membantu menilai kebolehpercayaan sumber dalam talian?",o:["Reka bentuk laman yang paling cantik","Identiti penerbit, rujukan bukti, tujuan penerbitan dan keselarasan dengan sumber lain","Jumlah gambar yang dipaparkan","Ayat yang paling menarik perhatian"],a:1,e:"Betul. Penilaian sumber melihat asal-usul, tujuan, bukti dan keselarasan maklumat; rupa laman semata-mata tidak menjamin kesahihan."},
+{q:"Apakah batas menggunakan gambar bangunan sahaja untuk menerangkan sebab pembinaan Istana Kellie terhenti?",o:["Gambar boleh menunjukkan keadaan fizikal tetapi tidak semestinya menjelaskan sebab atau niat pemilik","Gambar sentiasa lebih tepat daripada semua sumber lain","Gambar membuktikan semua cerita popular tentang istana","Tiada batas kerana bangunan ialah bukti yang lengkap"],a:0,e:"Betul. Bangunan ialah bukti material tentang reka bentuk dan keadaan fizikal, tetapi sebab dan niat memerlukan rekod atau sumber tambahan."}
+],
+2:[
+{q:"Apakah perkaitan yang munasabah antara Istana Kellie dengan sejarah ekonomi Perak?",o:["Bangunan itu membuktikan seluruh penduduk Perak mempunyai kehidupan yang sama","Bangunan itu boleh dikaji bersama sumber tentang pemilik, perladangan dan ekonomi kolonial","Bangunan itu tidak mempunyai hubungan dengan sejarah ekonomi","Bangunan itu membuktikan semua kegiatan ekonomi Perak bergantung pada seorang individu"],a:1,e:"Betul. Bangunan boleh dikaitkan dengan ekonomi kolonial melalui sumber tambahan tentang pemilik, perladangan dan tenaga kerja; elakkan generalisasi."},
+{q:"Mengapa sejarah tenaga buruh penting ketika mentafsir Istana Kellie?",o:["Supaya sejarah hanya menumpukan kehidupan pemilik bangunan","Kerana pekerja dan masyarakat turut membentuk sejarah tempat, walaupun kisah mereka mungkin kurang ditonjolkan","Kerana semua pekerja semestinya tinggal di dalam istana","Supaya cerita lisan menggantikan semua rekod sejarah"],a:1,e:"Betul. Sejarah yang seimbang mempertimbangkan pelbagai kelompok masyarakat dan menyemak pengalaman mereka melalui sumber yang boleh dipercayai."},
+{q:"Cadangan manakah paling sesuai untuk memelihara warisan sambil meningkatkan pembelajaran sejarah?",o:["Membina semula semua bahagian tanpa kajian","Mengutamakan cerita sensasi tanpa label sumber","Mendokumentasikan keadaan bangunan, menyediakan penerangan bersumber dan melibatkan pakar warisan","Mengehadkan semua maklumat supaya pelawat tidak bertanya"],a:2,e:"Betul. Dokumentasi, interpretasi bersumber dan kerjasama pakar membantu pemeliharaan serta membolehkan pelawat menilai bukti secara kritis."}
+]
+};
+const answers={1:{},2:{}};
+const checked={1:false,2:false};
+function render(n){
+ const root=document.getElementById('questions'+n);
+ root.innerHTML='';
+ data[n].forEach((item,i)=>{
+  const q=document.createElement('div');q.className='question';q.id=`q${n}_${i}`;
+  q.innerHTML=`<h3>${i+1}. ${item.q}</h3><div class="options">${item.o.map((op,j)=>`<button class="option" onclick="answer(${n},${i},${j},this)">${String.fromCharCode(65+j)}. ${op}</button>`).join('')}</div><div class="feedback" id="fb${n}_${i}" aria-live="polite"></div>`;
+  root.appendChild(q);
+ });
+ updateMeter(n);
+}
+function answer(n,i,j,btn){
+ if(checked[n])return;
+ answers[n][i]=j;
+ const buttons=document.querySelectorAll(`#q${n}_${i} .option`);
+ buttons.forEach(b=>{b.classList.remove('correct','wrong');b.setAttribute('aria-pressed','false')});
+ btn.setAttribute('aria-pressed','true');btn.style.outline='2px solid #2563eb';
+ updateMeter(n);
+}
+function updateMeter(n){
+ const count=Object.keys(answers[n]).length;
+ document.getElementById('meter'+n).style.width=(count/3*100)+'%';
+}
+function checkMission(n){
+ if(checked[n])return;
+ let score=0;
+ data[n].forEach((item,i)=>{
+  const chosen=answers[n][i], buttons=document.querySelectorAll(`#q${n}_${i} .option`);
+  buttons.forEach((b,j)=>{b.style.outline='';if(j===item.a)b.classList.add('correct');if(chosen===j&&j!==item.a)b.classList.add('wrong');b.disabled=true});
+  const fb=document.getElementById(`fb${n}_${i}`);
+  if(chosen===item.a){score++;fb.innerHTML='✅ Tepat! '+item.e}else if(chosen===undefined){fb.innerHTML='📝 Belum dijawab. Jawapan yang disyorkan: '+String.fromCharCode(65+item.a)+'. '+item.e}else{fb.innerHTML='💡 Cuba fahami semula. '+item.e}
+ });
+ checked[n]=true;
+ const result=document.getElementById('result'+n);result.classList.add('show');
+ result.innerHTML=`<b>${score===3?'🏆 Misi Selesai!':score===2?'⭐ Hampir berjaya!':'🔎 Teruskan penyiasatan!'}</b><br>Skor misi: <b>${score}/3</b>. ${score===3?'Anda menunjukkan kemahiran menilai bukti dan membuat perkaitan dengan baik.':'Baca maklum balas setiap soalan, kemudian cuba semula untuk mengukuhkan pemahaman.'}`;
+ updateTotal();
+}
+function resetMission(n){answers[n]={};checked[n]=false;document.getElementById('result'+n).classList.remove('show');render(n)}
+function updateTotal(){let s=0;for(let n of [1,2])if(checked[n])data[n].forEach((item,i)=>{if(answers[n][i]===item.a)s++});document.getElementById('totalScore').textContent=s}
+function showMission(n){
+ document.getElementById('mission1').classList.toggle('hidden',n!==1);
+ document.getElementById('mission2').classList.toggle('hidden',n!==2);
+ document.getElementById('tab1').classList.toggle('active',n===1);
+ document.getElementById('tab2').classList.toggle('active',n===2);
+}
+render(1);render(2);
+</script>
+</body>
+</html>
